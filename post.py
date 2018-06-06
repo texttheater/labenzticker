@@ -41,7 +41,7 @@ api = tweepy.API(auth)
 
 urllen = 23 # this might change, TODO check for this
 # tweet = stw + gra + colon + space + ekl + space + url
-ekllen = 140 - len(stw) - len(gra) - 2 - 1 - urllen
+ekllen = 280 - len(stw) - len(gra) - 2 - 1 - urllen
 
 if ekllen < 0:
     logging.fatal('No characters left for definition of %s' % stw)
@@ -50,7 +50,7 @@ if ekllen < 0:
 ekl = strip_wikilinks(strip_tags(ekl))
 
 if ekllen < len(ekl):
-    ekl = u'%s\u2026' % ekl[:ekllen - 1]
+    ekl = u'%s\u2026' % ekl[:ekllen - 2] # ellipsis counts double towards tweet length
 
 url = 'http://labenz.texttheater.net/%s' % urllib2.quote(stw.encode('UTF-8'))
 
