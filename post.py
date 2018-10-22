@@ -56,4 +56,6 @@ url = 'http://labenz.texttheater.net/%s' % urllib2.quote(stw.encode('UTF-8'))
 
 tweet = '%s%s: %s %s' % (stw, gra, ekl, url)
 
+print >> sys.stderr, tweet.encode('UTF-8')
+
 api.update_status(tweet)
