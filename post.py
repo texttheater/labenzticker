@@ -9,13 +9,12 @@ import sys
 import tweepy
 import urllib2
 
-from bs4 import BeautifulStoneSoup
+from bs4 import BeautifulSoup
 
 wikilink_pattern = re.compile(r'\[\[(?:[^]|]+\|)?([^]]+)\]\]')
 
 def strip_tags(html):
-    soup = BeautifulStoneSoup(html,
-            convertEntities=BeautifulStoneSoup.HTML_ENTITIES)
+    soup = BeautifulSoup(html)
     return ''.join(soup.findAll(text=True))
 
 def strip_wikilinks(text):
