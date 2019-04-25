@@ -51,7 +51,7 @@ ekl = strip_wikilinks(strip_tags(ekl))
 if ekllen < len(ekl):
     ekl = u'%s\u2026' % ekl[:ekllen - 2] # ellipsis counts double towards tweet length
 
-url = 'http://labenz.texttheater.net/%s' % urllib2.quote(stw.encode('UTF-8'))
+url = 'https://labenz.neutsch.org/%s' % urllib2.quote(stw.encode('UTF-8'))
 
 tweet = '%s%s: %s %s' % (stw, gra, ekl, url)
 
