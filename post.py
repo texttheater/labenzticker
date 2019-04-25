@@ -9,7 +9,7 @@ import sys
 import tweepy
 import urllib2
 
-from BeautifulSoup import BeautifulStoneSoup
+from bs4 import BeautifulStoneSoup
 
 wikilink_pattern = re.compile(r'\[\[(?:[^]|]+\|)?([^]]+)\]\]')
 

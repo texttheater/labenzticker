@@ -1,3 +1,4 @@
-config.py
+/bs4
+/config.py
 *.pyc
 *.err
