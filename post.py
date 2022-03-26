@@ -2,11 +2,11 @@
 
 import config
 import logging
-import mysql.connectory
+import mysql.connector
 import re
 import sys
 import tweepy
-import urllib2
+import urllib.parse
 
 from bs4 import BeautifulSoup
 
@@ -55,10 +55,10 @@ ekl = strip_wikilinks(strip_tags(ekl))
 if ekllen < len(ekl):
     ekl = '%s\u2026' % ekl[:ekllen - 2] # ellipsis counts double towards tweet length
 
-url = 'https://labenz.neutsch.org/%s' % urllib2.quote(stw.encode('UTF-8'))
+url = 'https://labenz.neutsch.org/%s' % urllib.parse.quote(stw.encode('UTF-8'))
 
 tweet = '%s%s: %s %s' % (stw, gra, ekl, url)
 
-print(file=sys.stderr, tweet)
+print(tweet, file=sys.stderr)
 
 client.create_tweet(tweet)
