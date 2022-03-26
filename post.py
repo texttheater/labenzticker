@@ -34,13 +34,9 @@ results = cursor.fetchall()
 (id, stw, stw_sanitus, bst, gra, ekl) = results[0]
 db.close()
 
-client = tweepy.Client(
-    #bearer_token=config.bearer_token,
-    consumer_key=config.consumer_key,
-    consumer_secret=config.consumer_secret,
-    access_token=config.access_token,
-    access_token_secret=config.access_token_secret,
-)
+auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
+auth.set_access_token(config.access_token, config.access_token_secret)
+api = tweepy.API(auth)
 
 urllen = 23 # this might change, TODO check for this
 # tweet = stw + gra + colon + space + ekl + space + url
@@ -61,4 +57,4 @@ tweet = '%s%s: %s %s' % (stw, gra, ekl, url)
 
 print(tweet, file=sys.stderr)
 
-client.create_tweet(tweet)
+api.update_status(tweet)
