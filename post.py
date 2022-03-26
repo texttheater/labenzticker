@@ -1,9 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
+#!/usr/bin/env python3
 
 import config
 import logging
-import MySQLdb
+import mysql.connectory
 import re
 import sys
 import tweepy
@@ -18,12 +17,13 @@ def strip_tags(html):
     return ''.join(soup.findAll(text=True))
 
 def strip_wikilinks(text):
-    return wikilink_pattern.sub((lambda m: u'\u2192 %s' % m.group(1)), text)
+    return wikilink_pattern.sub((lambda m: '\u2192 %s' % m.group(1)), text)
 
-db = MySQLdb.connect(host=config.host, user=config.user, passwd=config.passwd,
-        db=config.db, charset='utf8', use_unicode=True)
+db = mysql.connector.connect(host=config.host, user=config.user,
+        password=config.passwd, database=config.db)
 cursor = db.cursor()
-cursor.execute("""SELECT id, stw, stw_sanitus, UPPER(LEFT(stw_sortoren, 1)) AS bst, gra, ekl
+cursor.execute("""SELECT id, stw, stw_sanitus,
+        UPPER(LEFT(stw_sortoren, 1)) AS bst, gra, ekl
         FROM labenz
         WHERE aufgenommen IS NOT NULL
         AND veroeffentlicht IS NOT NULL
@@ -34,9 +34,13 @@ results = cursor.fetchall()
 (id, stw, stw_sanitus, bst, gra, ekl) = results[0]
 db.close()
 
-auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
-auth.set_access_token(config.access_token, config.access_token_secret)
-api = tweepy.API(auth)
+client = tweepy.Client(
+    #bearer_token=config.bearer_token,
+    consumer_key=config.consumer_key,
+    consumer_secret=config.consumer_secret,
+    access_token=config.access_token,
+    access_token_secret=config.access_token_secret,
+)
 
 urllen = 23 # this might change, TODO check for this
 # tweet = stw + gra + colon + space + ekl + space + url
@@ -49,12 +53,12 @@ if ekllen < 0:
 ekl = strip_wikilinks(strip_tags(ekl))
 
 if ekllen < len(ekl):
-    ekl = u'%s\u2026' % ekl[:ekllen - 2] # ellipsis counts double towards tweet length
+    ekl = '%s\u2026' % ekl[:ekllen - 2] # ellipsis counts double towards tweet length
 
 url = 'https://labenz.neutsch.org/%s' % urllib2.quote(stw.encode('UTF-8'))
 
 tweet = '%s%s: %s %s' % (stw, gra, ekl, url)
 
-print >> sys.stderr, tweet.encode('UTF-8')
+print(file=sys.stderr, tweet)
 
-api.update_status(tweet)
+client.create_tweet(tweet)
