@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 wikilink_pattern = re.compile(r'\[\[(?:[^]|]+\|)?([^]]+)\]\]')
 
 def strip_tags(html):
-    soup = BeautifulSoup(html)
+    soup = BeautifulSoup(html, 'html.parser')
     return ''.join(soup.findAll(text=True))
 
 def strip_wikilinks(text):
