@@ -11,7 +11,7 @@ import urllib2
 
 from BeautifulSoup import BeautifulStoneSoup
 
-wikilink_pattern = re.compile(r'\[\[(?:[^|]+\|)?([^]]+)\]\]')
+wikilink_pattern = re.compile(r'\[\[(?:[^]|]+\|)?([^]]+)\]\]')
 
 def strip_tags(html):
     soup = BeautifulStoneSoup(html,
